@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn import datasets, linear_model, metrics
 
 
@@ -17,46 +19,37 @@ def main():
 
     # plt.show()
 
-    x = dataset[['efactor', 'interval', 'repetition', 'CID', 'UID']]
-    y = dataset['quality']
+    x_ = dataset[['CID', 'UID']]
+    y = dataset['efactor']
 
-    x_ = PolynomialFeatures(degree=3, include_bias=False).fit_transform(x)
+    # x_ = PolynomialFeatures(degree=3, include_bias=False).fit_transform(x)
 
-    x_train, x_test, y_train, y_test = train_test_split(x_, y, test_size = 0.1, random_state = 0)
+    x_train, x_test, y_train, y_test = train_test_split(x_, y, test_size = 0.3, random_state = 30)
 
-    mlr = linear_model.LinearRegression()  
-    mlr.fit(x_train, y_train)
+    #dtree = DecisionTreeRegressor(max_depth=10, min_samples_leaf=0.13, random_state=3)
+    #dtree.fit(x_train, y_train)
 
-    print("Intercept: ", mlr.intercept_)
-    print("Coefficients:")
-    print(list(zip(x_, mlr.coef_)))
-
-    y_pred_mlr= mlr.predict(x_test)
-    x_pred_mlr= mlr.predict(x_train)  
+    model_rf = RandomForestRegressor(n_estimators=500, oob_score=True, random_state=100)
+    model_rf.fit(x_train, y_train) 
 
 
-    # print("Prediction for test set: {}".format(y_pred_mlr))
+    y_pred_mlr= model_rf.predict(x_test)
+
 
     mlr_diff = pd.DataFrame({'Actual value': y_test, 'Predicted value': y_pred_mlr})
     print(mlr_diff)
 
-    print('R squared value of the model: {:.2f}'.format(mlr.score(x_,y)*100))
+    print('R squared value of the model: {:.2f}'.format(model_rf.score(x_,y)*100))
 
     meanAbErr = metrics.mean_absolute_error(y_test, y_pred_mlr)
     meanSqErr = metrics.mean_squared_error(y_test, y_pred_mlr)
-    # rootMeanSqErr = np.sqrt(metrics.mean_squared_error(y_test, y_pred_mlr))
+    rootMeanSqErr = np.sqrt(metrics.mean_squared_error(y_test, y_pred_mlr))
 
     print('Mean Absolute Error:', meanAbErr)
     print('Mean Square Error:', meanSqErr)
-    # print('Root Mean Square Error:', rootMeanSqErr)
+    print('Root Mean Square Error:', rootMeanSqErr)
 
-    toto = mlr.predict(PolynomialFeatures(degree=3, include_bias=False).fit_transform(([[1.4567999839782715, 2, 2,18,6]])))
-
-    if toto >= 3:
-        print("Good answer")
-    else:
-        print("Bad answer")
-
+    toto = model_rf.predict(([[16, 6]]))
     print(toto)
 
 main()
