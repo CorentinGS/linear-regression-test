@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
 from sklearn import datasets, linear_model, metrics
 
 
@@ -20,16 +19,14 @@ def main():
     x = dataset[['efactor', 'interval', 'repetition', 'CID', 'UID']]
     y = dataset['quality']
 
-    x_ = PolynomialFeatures(degree=2, include_bias=False).fit_transform(x)
-
-    x_train, x_test, y_train, y_test = train_test_split(x_, y, test_size = 0.1, random_state = 0)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.1, random_state = 0)
 
     mlr = linear_model.LinearRegression()  
     mlr.fit(x_train, y_train)
 
     print("Intercept: ", mlr.intercept_)
     print("Coefficients:")
-    print(list(zip(x_, mlr.coef_)))
+    print(list(zip(x, mlr.coef_)))
 
     y_pred_mlr= mlr.predict(x_test)
     x_pred_mlr= mlr.predict(x_train)  
@@ -40,7 +37,7 @@ def main():
     mlr_diff = pd.DataFrame({'Actual value': y_test, 'Predicted value': y_pred_mlr})
     print(mlr_diff)
 
-    print('R squared value of the model: {:.2f}'.format(mlr.score(x_,y)*100))
+    print('R squared value of the model: {:.2f}'.format(mlr.score(x,y)*100))
 
     meanAbErr = metrics.mean_absolute_error(y_test, y_pred_mlr)
     meanSqErr = metrics.mean_squared_error(y_test, y_pred_mlr)
@@ -50,7 +47,7 @@ def main():
     print('Mean Square Error:', meanSqErr)
     # print('Root Mean Square Error:', rootMeanSqErr)
 
-    toto = mlr.predict(PolynomialFeatures(degree=2, include_bias=False).fit_transform(([[1.4567999839782715, 3, 2,18,6]])))
+    toto = mlr.predict(([[1.4567999839782715, 3, 2,18,6]]))
 
     if toto >= 3:
         print("Good answer")
