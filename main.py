@@ -10,21 +10,19 @@ from sklearn import datasets, linear_model, metrics
 def main():
     print("hello world")
 
-    dataset = pd.read_csv("dt2.csv")
+    dataset = pd.read_csv("dt3.csv")
     dataset.head()
 
     # sns.histplot(dataset["Quality"])
 
     # plt.show()
 
-
-
-    x = dataset[['EF', 'Interval', 'Rep', 'CID', 'UID']]
-    y = dataset['Quality']
+    x = dataset[['efactor', 'interval', 'repetition', 'CID', 'UID']]
+    y = dataset['quality']
 
     x_ = PolynomialFeatures(degree=2, include_bias=False).fit_transform(x)
 
-    x_train, x_test, y_train, y_test = train_test_split(x_, y, test_size = 0.2, random_state = 100)
+    x_train, x_test, y_train, y_test = train_test_split(x_, y, test_size = 0.1, random_state = 0)
 
     mlr = linear_model.LinearRegression()  
     mlr.fit(x_train, y_train)
@@ -52,5 +50,13 @@ def main():
     print('Mean Square Error:', meanSqErr)
     # print('Root Mean Square Error:', rootMeanSqErr)
 
+    toto = mlr.predict(PolynomialFeatures(degree=2, include_bias=False).fit_transform(([[1.4567999839782715, 3, 2,18,6]])))
+
+    if toto >= 3:
+        print("Good answer")
+    else:
+        print("Bad answer")
+
+    print(toto)
 
 main()
