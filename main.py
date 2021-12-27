@@ -20,7 +20,7 @@ def main():
     x = dataset[['efactor', 'interval', 'repetition', 'CID', 'UID']]
     y = dataset['quality']
 
-    x_ = PolynomialFeatures(degree=2, include_bias=False).fit_transform(x)
+    x_ = PolynomialFeatures(degree=3, include_bias=False).fit_transform(x)
 
     x_train, x_test, y_train, y_test = train_test_split(x_, y, test_size = 0.1, random_state = 0)
 
@@ -50,7 +50,7 @@ def main():
     print('Mean Square Error:', meanSqErr)
     # print('Root Mean Square Error:', rootMeanSqErr)
 
-    toto = mlr.predict(PolynomialFeatures(degree=2, include_bias=False).fit_transform(([[1.4567999839782715, 3, 2,18,6]])))
+    toto = mlr.predict(PolynomialFeatures(degree=3, include_bias=False).fit_transform(([[1.4567999839782715, 2, 2,18,6]])))
 
     if toto >= 3:
         print("Good answer")
