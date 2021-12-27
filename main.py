@@ -29,7 +29,7 @@ def main():
     #dtree = DecisionTreeRegressor(max_depth=10, min_samples_leaf=0.13, random_state=3)
     #dtree.fit(x_train, y_train)
 
-    model_rf = RandomForestRegressor(n_estimators=500, oob_score=True, random_state=100)
+    model_rf = RandomForestRegressor(n_estimators=150,  max_features=1, oob_score=True, random_state=30)
     model_rf.fit(x_train, y_train) 
 
 
