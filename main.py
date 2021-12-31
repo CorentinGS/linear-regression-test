@@ -19,8 +19,9 @@ def main():
 
     # plt.show()
 
-    x_ = dataset[['CID', 'UID']]
-    y = dataset['efactor']
+    #x_ = dataset[['CID', 'UID']]
+    x_ = dataset[['efactor',  'repetition', 'UID', 'CID']]
+    y = dataset['interval']
 
     # x_ = PolynomialFeatures(degree=3, include_bias=False).fit_transform(x)
 
@@ -49,7 +50,7 @@ def main():
     print('Mean Square Error:', meanSqErr)
     print('Root Mean Square Error:', rootMeanSqErr)
 
-    toto = model_rf.predict(([[16, 6]]))
+    toto = model_rf.predict(([[2.58463262, 6, 6, 15]]))
     print(toto)
 
 main()
